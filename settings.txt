@@ -5,7 +5,7 @@
 # Lines starting with # are notes. Leave a value blank to use the default.
 
 # Your ESPN league's number: the digits after leagueId= in the league's web address.
-espn_league_id:
+espn_league_id: 75290403
 
 # Shown in the header and on link previews. Leave blank to use the league's name on ESPN.
 league_name:
