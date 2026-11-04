@@ -1,0 +1,32 @@
+# League settings for your Hall of Fame site.
+#
+# The easiest way to fill these in is the "Set up my league" form under the Actions tab.
+# You can also edit this file right on GitHub (pencil icon). Each line is  name: value
+# Lines starting with # are notes. Leave a value blank to use the default.
+
+# Your ESPN league's number: the digits after leagueId= in the league's web address.
+espn_league_id:
+
+# Shown in the header and on link previews. Leave blank to use the league's name on ESPN.
+league_name:
+
+# Header color and trim color (trophies, links, your-team highlights), as hex codes.
+# The site adjusts them a little if they would be hard to read.
+brand_color: #1F4E8C
+trim_color: #E0B04B
+
+# The write-ups of close games: the section name, the name for one game,
+# and how close a game has to be (in points) to count.
+close_games_name: Nail-Biters
+close_game_name: Nail-biter
+close_game_points: 10
+
+# Time zone for kickoff times on the live board (a tz database name).
+timezone: America/New_York
+
+# Optional: leave out seasons before this year, e.g. if the league changed format.
+first_season:
+
+# Optional: a Google Doc of weekly picks, shared as "Anyone with the link can view".
+# Paste the doc's link. Leave blank and the Weekly Bet tab stays hidden. See the README.
+bet_doc:

@@ -1,0 +1,68 @@
+name: Set up my league
+
+# A form for settings.txt: fill it in, click Run workflow, and the site builds.
+# Run it again any time to change a setting; leave a box blank to keep what's there.
+on:
+  workflow_dispatch:
+    inputs:
+      espn_league_id:
+        description: "ESPN league ID: the digits after leagueId= in your league's web address (or paste the whole address)"
+        required: false
+      league_name:
+        description: "League name for the site (blank: the name on ESPN)"
+        required: false
+      brand_color:
+        description: "Header color as a hex code, e.g. #1F4E8C"
+        required: false
+      trim_color:
+        description: "Trim color for trophies and highlights, e.g. #E0B04B"
+        required: false
+      close_games_name:
+        description: "What to call close games, e.g. Nail-Biters"
+        required: false
+      close_game_name:
+        description: "...and one close game, e.g. Nail-biter"
+        required: false
+      bet_doc:
+        description: "Optional: link to a Google Doc of weekly picks (see the README)"
+        required: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Save the settings
+        env:
+          ESPN_LEAGUE_ID: ${{ inputs.espn_league_id }}
+          LEAGUE_NAME: ${{ inputs.league_name }}
+          BRAND_COLOR: ${{ inputs.brand_color }}
+          TRIM_COLOR: ${{ inputs.trim_color }}
+          CLOSE_GAMES_NAME: ${{ inputs.close_games_name }}
+          CLOSE_GAME_NAME: ${{ inputs.close_game_name }}
+          BET_DOC: ${{ inputs.bet_doc }}
+        run: python3 scripts/setup.py
+
+      - name: Commit settings.txt
+        run: |
+          git config user.name "hall of fame bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add settings.txt
+          git diff --cached --quiet || git commit -m "League settings"
+          git push
+
+      - name: Build the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! grep -Eq '^espn_league_id:[[:space:]]*[0-9]+' settings.txt; then
+            echo "::error::No ESPN league ID yet. Run this again and fill in the first box."
+            exit 1
+          fi
+          gh workflow run update.yml --ref "${{ github.ref_name }}"
+          echo "Started 'Update the site'. It takes a couple of minutes; the link shows up on that run's summary."
